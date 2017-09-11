@@ -1,0 +1,4 @@
+*.yaml
+*.sw?
+*.pyc
+dist/
