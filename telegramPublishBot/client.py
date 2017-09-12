@@ -5,6 +5,7 @@ import requests
 import json
 
 from .token import *
+from .network import postAsync
 
 
 class Message:
@@ -45,6 +46,10 @@ def publish(url, privateKey, message):
     if not url.endswith("/"): url += "/"
     url += publicToken + "/publish"
     data = base64.b64encode(sign(privateKey, str(message).encode('utf-8')))
+
+    postAsync(url, data.decode('ascii'))
+    return
+
     r = requests.post(url, data=data)
     print(url)
     print(data)

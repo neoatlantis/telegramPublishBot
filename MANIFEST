@@ -3,6 +3,7 @@ setup.py
 telegramPublishBot/__init__.py
 telegramPublishBot/__main__.py
 telegramPublishBot/client.py
+telegramPublishBot/network.py
 telegramPublishBot/publisher.py
 telegramPublishBot/server.py
 telegramPublishBot/token.py

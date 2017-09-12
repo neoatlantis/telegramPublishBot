@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-from .token import *
 import requests
 import json
+from .token import *
+from .network import postAsync
 
 
 URL = lambda token, method:\
@@ -46,6 +47,9 @@ def publishToTelegram(token, channel, data):
     for key in data:
         if key in legitKeys[action]:
             payload[key] = data[key]
+
+    postAsync(url, payload)
+    return
 
     r = requests.post(url, data = payload)
     print(r.status_code)
