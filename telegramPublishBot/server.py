@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 
-from bottle import *
+import json
 import base64
+
+from bottle import *
 
 from .publisher import *
 from .token import *
+
 
 __CONFIG = None
 
@@ -25,19 +28,13 @@ def publish(token):
     global __CONFIG
     if token not in __CONFIG["authorized"]:
         return abort(401, "Unauthorized access with this token.")
-
     try:
         data = verify(token, base64.b64decode(request.body.read()))
         assert data != None
-        data = data.decode('utf-8')
+        publishToTelegram(__CONFIG["token"], __CONFIG["channel"], data)
     except:
         return abort(400, "No valid data received for this token.")
-
-    publishToTelegram(__CONFIG["token"], __CONFIG["channel"], data)
-        
     return data
-
-
 
 
 

@@ -2,6 +2,8 @@
 
 from .token import *
 import requests
+import json
+
 
 URL = lambda token, method:\
     "https://api.telegram.org/bot%s/%s" % (token, method)
@@ -16,13 +18,35 @@ def getMe(token):
         return False
     
 
-def publishToTelegram(token, channel, text):
-    url = URL(token, "sendMessage")
+def publishToTelegram(token, channel, data):
+    try:
+        assert type(data) in [str, bytes]
+        if type(data) == bytes:
+            data = data.decode('utf-8')
+        data = json.loads(data)
+    except:
+        raise Exception("Data sent to server must be stringified JSON.")
+
+    action = data["action"]
+    legitKeys = {
+        "sendMessage": ["text", "parse_mode"],
+        "sendPhoto": ["photo", "caption"],
+        "sendLocation": ["latitude", "longitude"],
+    }
+
+    assert action in legitKeys
+
+    url = URL(token, action)
     print(url)
+    
     payload = {
         "chat_id": channel,
-        "text": text,
     }
+
+    for key in data:
+        if key in legitKeys[action]:
+            payload[key] = data[key]
+
     r = requests.post(url, data = payload)
     print(r.status_code)
     print(r.text)
