@@ -19,7 +19,7 @@ def getMe(token):
         return False
     
 
-def publishToTelegram(token, channel, data):
+def publishToTelegram(token, channel, data, silent=False):
     try:
         assert type(data) in [str, bytes]
         if type(data) == bytes:
@@ -42,6 +42,7 @@ def publishToTelegram(token, channel, data):
     
     payload = {
         "chat_id": channel,
+        "disable_notification": silent,
     }
 
     for key in data:

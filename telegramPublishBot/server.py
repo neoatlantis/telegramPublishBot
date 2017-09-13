@@ -28,10 +28,20 @@ def publish(token):
     global __CONFIG
     if token not in __CONFIG["authorized"]:
         return abort(401, "Unauthorized access with this token.")
+    else:
+        channelConfig = __CONFIG["authorized"][token]
     try:
         data = verify(token, base64.b64decode(request.body.read()))
         assert data != None
-        publishToTelegram(__CONFIG["token"], __CONFIG["channel"], data)
+        silent = False
+        if "silent" in channelConfig:
+            silent = channelConfig["silent"]
+        publishToTelegram(\
+            __CONFIG["token"],          # access token for telegram
+            channelConfig["channel"], # access token given by user
+            data,
+            silent=silent
+        )
     except:
         return abort(400, "No valid data received for this token.")
     return data

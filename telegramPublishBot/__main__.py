@@ -12,16 +12,13 @@ from .token import *
 
 try:
     ACTION = sys.argv[1]
-    assert ACTION in ["newtoken", "publish", "serve"]
+    assert ACTION in ["newtoken", "serve"]
     if ACTION in ["serve", "publish"]:
         CONFIGFILE = os.path.realpath(sys.argv[2])
         assert os.path.isfile(CONFIGFILE)
 except:
-    print("Usage: python3 -m telegramPublishBot [newtoken|[publish|serve] <Config File Path>]")
+    print("Usage: python3 -m telegramPublishBot [newtoken|serve <Config File Path>]")
     sys.exit(1)
-
-
-##############################################################################
 
 if ACTION == "newtoken":
     tokenPair = newToken()
@@ -30,33 +27,9 @@ if ACTION == "newtoken":
     print(" - public token:                    \t%s" % tokenPair["public"])
     exit()
 
-##############################################################################
-
-# Otherwise: serve as a server, or publish from CLI
-
-config = yaml.load(open(CONFIGFILE, 'r'))
-
-if ACTION == "publish":
-    try:
-        print("Type in your input...")
-        message = sys.stdin.read()
-    except KeyboardInterrupt:
-        print("Publishing cancelled. Exit.")
-        exit()
-
-    from .publisher import *
-    from .client import PlainMessage
-
-    message = PlainMessage(message)
-
-    token = config["token"]
-    channel = config["channel"]
-    print(token)
-    print(channel)
-    getMe(token)
-    print(publishToTelegram(token, channel, str(message)))
-
-elif ACTION == "serve":
+if ACTION == "serve":
     from .server import startServer
+    config = yaml.load(open(CONFIGFILE, 'r'))
+    print(config)
     startServer(config)
     exit()
