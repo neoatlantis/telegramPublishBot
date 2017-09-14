@@ -1,11 +1,19 @@
 #!/usr/bin/env python3
 
+from .selfcheck import selfCheck
+selfCheck()
+
 import base64
 import requests
 import json
+import subprocess
 
 from .token import *
 from .network import postAsync
+
+
+
+
 
 
 class Message:

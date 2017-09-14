@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'telegramPublishBot',
   packages = ['telegramPublishBot'], # this must be the same as the name above
-  version = '0.1.5',
+  version = '0.1.6',
   description = 'A bot and service for publishing to telegram using HTTP protocol.',
   author = 'NeoAtlantis',
   author_email = 'contact@chaobai.li',

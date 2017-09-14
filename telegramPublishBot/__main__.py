@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+from .selfcheck import selfCheck
+selfCheck()
+
 import os
 import sys
 import yaml
